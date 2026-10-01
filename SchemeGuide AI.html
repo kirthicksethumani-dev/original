@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SchemeGuide AI</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{--bg:#FFFFFF;--ink:#10202B;--soft:#EAF2F6;--line:#B9CBD6;--brand:#0B4F6C;--brand-ink:#FFFFFF;--sun:#F5A300;--sun-ink:#10202B;--ai:#EAF2F6;--me:#0B4F6C;--g:#0E7A3B;--gbg:#E3F5EA;--y:#8A5A00;--ybg:#FFF1CC;--r:#B3261E;--rbg:#FDE7E5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0C1A22;--ink:#F2F7FA;--soft:#16303D;--line:#3C5B6B;--brand:#7CC4E4;--brand-ink:#08222F;--ai:#16303D;--me:#7CC4E4;--g:#7BE0A3;--gbg:#0F3322;--y:#FFD777;--ybg:#3A2E0A;--r:#FFA9A3;--rbg:#40130F}}
+:root[data-theme="dark"]{--bg:#0C1A22;--ink:#F2F7FA;--soft:#16303D;--line:#3C5B6B;--brand:#7CC4E4;--brand-ink:#08222F;--ai:#16303D;--me:#7CC4E4;--g:#7BE0A3;--gbg:#0F3322;--y:#FFD777;--ybg:#3A2E0A;--r:#FFA9A3;--rbg:#40130F}
+*,*:before,*:after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:400 20px/1.5 "Atkinson Hyperlegible",Verdana,Arial,sans-serif;display:flex;flex-direction:column;max-width:640px;margin-inline:auto}
+button{font:inherit;color:inherit;cursor:pointer;border:0;min-height:60px;border-radius:18px;padding:12px 20px}
+button:focus-visible,input:focus-visible{outline:4px solid var(--sun);outline-offset:2px}
+header{display:flex;justify-content:flex-end;padding:12px 16px 0}
+.pill{background:var(--soft);border:2px solid var(--line);font-weight:700;min-height:56px}
+main{flex:1;overflow-y:auto;padding:8px 20px 20px;display:flex;flex-direction:column}
+nav{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px 12px;border-top:2px solid var(--line);background:var(--bg)}
+nav button{background:transparent;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:0;line-height:1.2;font-size:18px}
+nav button span{font-size:26px}
+nav button[aria-current=page]{background:var(--soft);box-shadow:inset 0 -5px 0 var(--sun)}
+.home{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px}
+h1{font-size:40px;line-height:1.1;margin:0;color:var(--brand);letter-spacing:-.5px}
+.tag{font-size:22px;margin:0 0 18px}
+.mic{width:220px;height:220px;border-radius:50%;background:var(--sun);color:var(--sun-ink);font-weight:700;font-size:26px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:0 0 0 12px color-mix(in srgb,var(--sun) 25%,transparent)}
+.mic .ic{font-size:76px;line-height:1}
+.mic.on{background:var(--r);color:#fff;animation:pulse 1.2s infinite}
+.mic.small{width:100%;height:84px;border-radius:22px;flex-direction:row;gap:14px;font-size:22px;box-shadow:none}
+.mic.small .ic{font-size:40px}
+@keyframes pulse{50%{box-shadow:0 0 0 24px color-mix(in srgb,var(--r) 20%,transparent)}}
+@media (prefers-reduced-motion:reduce){.mic.on{animation:none}}
+.hint{font-size:22px;margin:14px 0 6px}
+.big{background:var(--brand);color:var(--brand-ink);font-weight:700;width:100%}
+.alt{background:var(--soft);border:2px solid var(--line);font-weight:700;width:100%}
+.stack{width:100%;display:flex;flex-direction:column;gap:12px;margin-top:10px}
+.chat{display:flex;flex-direction:column;gap:14px;flex:1;padding-bottom:8px}
+.msg{max-width:92%;padding:14px 16px;border-radius:20px}
+.msg.ai{background:var(--ai);align-self:flex-start;border-bottom-left-radius:6px}
+.msg.me{background:var(--me);color:var(--brand-ink);align-self:flex-end;border-bottom-right-radius:6px;font-weight:700}
+.msg .who{font-weight:700;font-size:17px;margin-bottom:2px}
+.listen{margin-top:10px;background:var(--brand);color:var(--brand-ink);font-weight:700;min-height:56px}
+.dock{display:flex;flex-direction:column;gap:10px;padding-top:10px;position:sticky;bottom:0;background:var(--bg)}
+.typebox{display:flex;gap:8px}
+.typebox input{flex:1;min-height:60px;font:inherit;border:2px solid var(--line);border-radius:16px;padding:0 14px;background:var(--bg);color:var(--ink)}
+.typebox button{background:var(--brand);color:var(--brand-ink);font-weight:700}
+.link{background:transparent;text-decoration:underline;font-weight:700;min-height:48px;color:var(--brand)}
+.card{border:2px solid var(--line);border-radius:20px;overflow:hidden;background:var(--bg);margin-top:8px}
+.card h2{margin:0;padding:14px 16px;background:var(--brand);color:var(--brand-ink);font-size:26px;line-height:1.2}
+.sec{padding:12px 16px;border-top:2px solid var(--line)}
+.sec b{display:block;font-size:20px;color:var(--brand)}
+.sec p{margin:2px 0 0}
+.sec ul{margin:4px 0 0;padding-left:24px}
+.verdict{border-radius:20px;padding:16px;margin-top:10px;border:3px solid}
+.verdict h3{margin:0 0 6px;font-size:28px;line-height:1.2}
+.verdict small{display:block;margin-top:10px;font-size:18px;font-weight:700}
+.verdict.green{background:var(--gbg);border-color:var(--g);color:var(--g)}.verdict.yellow{background:var(--ybg);border-color:var(--y);color:var(--y)}.verdict.red{background:var(--rbg);border-color:var(--r);color:var(--r)}
+.verdict p,.verdict small{color:var(--ink)}
+.title{font-size:30px;font-weight:700;margin:6px 0 8px;color:var(--brand)}
+.q{width:100%;text-align:left;background:var(--soft);border:2px solid var(--line);margin-bottom:10px;font-weight:700}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center;z-index:5}
+.sheet>div{background:var(--bg);width:100%;max-width:640px;border-radius:26px 26px 0 0;padding:20px 20px calc(20px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:10px}
+.sheet h2{margin:0 0 4px;font-size:28px}
+.sheet button.on{background:var(--brand);color:var(--brand-ink);font-weight:700}
+.sheet button:not(.on){background:var(--soft);border:2px solid var(--line);font-weight:700}
+.dots span{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--brand);margin-right:6px;animation:b 1s infinite}
+.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+@keyframes b{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.dots span{animation:none}}
+.note{background:var(--ybg);border:2px solid var(--y);border-radius:16px;padding:12px 14px;margin-top:10px;font-size:19px}
+[hidden]{display:none!important}
+.ph{display:block;width:100%;max-width:260px;border-radius:14px;margin-bottom:8px}i{font-style:normal}.card .ph{max-width:none;border-radius:0;margin:0;max-height:220px;object-fit:cover}</style>
+</head>
+<body>
+<header><button class="pill" id="langBtn">🌐 <i data-t="lang">Language</i></button></header>
+<main id="main"></main>
+<nav>
+  <button data-go="home" aria-current="page"><span>🏠</span><i data-t="home">Home</i></button>
+  <button data-go="questions"><span>💬</span><i data-t="myq">My Questions</i></button>
+  <button data-go="help"><span>❓</span><i data-t="help">Help</i></button>
+</nav>
+<div class="sheet" id="sheet" hidden><div id="sheetBody"></div></div>
+<input type="file" id="file" accept="image/*" hidden>
+
+<script>
+const LANGS=[["English","English","en-IN"],["Tamil","தமிழ்","ta-IN"],["Hindi","हिन्दी","hi-IN"],["Telugu","తెలుగు","te-IN"],["Malayalam","മലയാളം","ml-IN"],["Kannada","ಕನ್ನಡ","kn-IN"]];
+const $=s=>document.querySelector(s), main=$("#main");
+const S={lang:0,view:"home",hist:[],scheme:null,busy:false,rec:null,listening:false,typing:false,sample:null,canImg:false};
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+try{S.lang=+localStorage.getItem("sg_lang")||0}catch(e){}
+let past=[];try{past=JSON.parse(localStorage.getItem("sg_q")||"[]")}catch(e){}
+
+(async()=>{try{const c=await window.claude?.use("sample");S.sample=c||null;if(c){const l=await c.limits().catch(()=>null);S.canImg=!!l?.images;if(l?.images)$("#file").accept=l.images.mediaTypes.join(",")}}catch(e){}render()})();
+
+const esc=t=>String(t??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const langName=()=>LANGS[S.lang][0], langCode=()=>LANGS[S.lang][2];
+
+/* ---------- words in every language ---------- */
+const K="lang,tag,speak,listening,hint,upload,typeI,home,myq,help,ans,listen,you,again,send,ph,elig,does,who,ben,docs,how,helpT,h1,h2,goMic,noQ,askQ,tapQ,chL,got,upQ,errG,errR,photo,noVoice,noMic,micErr,chk,found".split(",");
+const LK=["en","ta","hi","te","ml","kn"];
+const T={
+en:["Language","Government schemes made simple.","Tap and Speak","Listening… tap to stop","Tell me what you want to know.","Upload Scheme Poster","Type instead","Home","My Questions","Help","Tap and speak your answer","Listen","You","Start again","Send","Type here","Your Eligibility","What this scheme does","Who can apply","Benefits","Documents needed","How to apply","Need Help?","You can speak to me. Press the microphone and tell me what you want to know.","If you have a poster of a scheme, press Upload Scheme Poster and I will explain it.","Go to the microphone","You have not asked anything yet.","Ask a question","Tap a question to ask it again.","Choose your language","Got it! Let me understand this scheme for you.","I uploaded this scheme. Can I apply?","Something went wrong. Please try again.","I could not read this poster. Please take a clear photo and try again.","📷 Send a photo","Voice is not available in this language on this phone. You can still read the answer.","Speaking is not available on this phone. Please type.","Please allow the microphone, then try again."],
+ta:["மொழி","அரசு திட்டங்கள் எளிமையாக.","தட்டிப் பேசுங்கள்","கேட்கிறேன்… நிறுத்த தட்டவும்","நீங்கள் என்ன தெரிந்துகொள்ள விரும்புகிறீர்கள் என்று சொல்லுங்கள்.","திட்ட சுவரொட்டியை பதிவேற்றவும்","தட்டச்சு செய்யவும்","முகப்பு","என் கேள்விகள்","உதவி","தட்டிப் பதில் சொல்லுங்கள்","கேளுங்கள்","நீங்கள்","மீண்டும் தொடங்கவும்","அனுப்பு","இங்கே தட்டச்சு செய்யவும்","உங்கள் தகுதி","இந்த திட்டம் என்ன செய்கிறது","யார் விண்ணப்பிக்கலாம்","நன்மைகள்","தேவையான ஆவணங்கள்","எப்படி விண்ணப்பிப்பது","உதவி வேண்டுமா?","என்னிடம் பேசலாம். மைக்ரோஃபோனை அழுத்தி, என்ன தெரிந்துகொள்ள வேண்டும் என்று சொல்லுங்கள்.","திட்ட சுவரொட்டி இருந்தால், 'திட்ட சுவரொட்டியை பதிவேற்றவும்' அழுத்துங்கள். நான் விளக்குகிறேன்.","மைக்ரோஃபோனுக்குச் செல்லவும்","நீங்கள் இன்னும் எதுவும் கேட்கவில்லை.","கேள்வி கேளுங்கள்","மீண்டும் கேட்க ஒரு கேள்வியைத் தட்டவும்.","உங்கள் மொழியைத் தேர்ந்தெடுக்கவும்","சரி! இந்த திட்டத்தை உங்களுக்காகப் புரிந்துகொள்கிறேன்.","நான் இந்த திட்டத்தை பதிவேற்றினேன். நான் விண்ணப்பிக்கலாமா?","ஏதோ தவறு நடந்தது. மீண்டும் முயற்சிக்கவும்.","இந்த சுவரொட்டியைப் படிக்க முடியவில்லை. தெளிவான படம் எடுத்து மீண்டும் முயற்சிக்கவும்.","📷 படம் அனுப்பு","இந்த மொழிக்கான குரல் இந்த போனில் இல்லை. எழுத்தில் படிக்கலாம்.","பேசுவது இந்த போனில் இயலாது. தட்டச்சு செய்யவும்.","மைக்ரோஃபோனை அனுமதித்து மீண்டும் முயற்சிக்கவும்."],
+hi:["भाषा","सरकारी योजनाएँ, आसान भाषा में।","दबाएँ और बोलें","सुन रहा हूँ… रोकने के लिए दबाएँ","बताइए, आप क्या जानना चाहते हैं।","योजना का पोस्टर अपलोड करें","टाइप करें","होम","मेरे सवाल","मदद","दबाएँ और जवाब बोलें","सुनें","आप","फिर से शुरू करें","भेजें","यहाँ लिखें","आपकी पात्रता","यह योजना क्या करती है","कौन आवेदन कर सकता है","लाभ","ज़रूरी दस्तावेज़","आवेदन कैसे करें","मदद चाहिए?","आप मुझसे बोल सकते हैं। माइक दबाइए और बताइए कि आप क्या जानना चाहते हैं।","अगर आपके पास योजना का पोस्टर है, तो 'योजना का पोस्टर अपलोड करें' दबाइए। मैं समझा दूँगा।","माइक के पास जाएँ","आपने अभी तक कुछ नहीं पूछा।","सवाल पूछें","दोबारा पूछने के लिए सवाल दबाएँ।","अपनी भाषा चुनें","ठीक है! मैं आपके लिए यह योजना समझता हूँ।","मैंने यह योजना अपलोड की है। क्या मैं आवेदन कर सकता हूँ?","कुछ गड़बड़ हो गई। फिर से कोशिश करें।","मैं यह पोस्टर पढ़ नहीं पाया। साफ़ फोटो लेकर फिर कोशिश करें।","📷 फोटो भेजें","इस फोन पर इस भाषा की आवाज़ नहीं है। आप लिखा हुआ पढ़ सकते हैं।","इस फोन पर बोलना संभव नहीं है। कृपया टाइप करें।","कृपया माइक की अनुमति दें और फिर कोशिश करें।"],
+te:["భాష","ప్రభుత్వ పథకాలు సులభంగా.","నొక్కి మాట్లాడండి","వింటున్నాను… ఆపడానికి నొక్కండి","మీరు ఏమి తెలుసుకోవాలనుకుంటున్నారో చెప్పండి.","పథకం పోస్టర్ అప్‌లోడ్ చేయండి","టైప్ చేయండి","హోమ్","నా ప్రశ్నలు","సహాయం","నొక్కి మీ జవాబు చెప్పండి","వినండి","మీరు","మళ్లీ మొదలుపెట్టండి","పంపండి","ఇక్కడ టైప్ చేయండి","మీ అర్హత","ఈ పథకం ఏం చేస్తుంది","ఎవరు దరఖాస్తు చేయవచ్చు","ప్రయోజనాలు","కావలసిన పత్రాలు","ఎలా దరఖాస్తు చేయాలి","సహాయం కావాలా?","మీరు నాతో మాట్లాడవచ్చు. మైక్ నొక్కి, మీరు ఏమి తెలుసుకోవాలనుకుంటున్నారో చెప్పండి.","మీ దగ్గర పథకం పోస్టర్ ఉంటే, 'పథకం పోస్టర్ అప్‌లోడ్ చేయండి' నొక్కండి. నేను వివరిస్తాను.","మైక్ దగ్గరకు వెళ్లండి","మీరు ఇంకా ఏమీ అడగలేదు.","ప్రశ్న అడగండి","మళ్లీ అడగడానికి ప్రశ్నను నొక్కండి.","మీ భాషను ఎంచుకోండి","సరే! ఈ పథకాన్ని మీ కోసం అర్థం చేసుకుంటాను.","నేను ఈ పథకాన్ని అప్‌లోడ్ చేశాను. నేను దరఖాస్తు చేయవచ్చా?","ఏదో తప్పు జరిగింది. మళ్లీ ప్రయత్నించండి.","ఈ పోస్టర్ చదవలేకపోయాను. స్పష్టమైన ఫోటో తీసి మళ్లీ ప్రయత్నించండి.","📷 ఫోటో పంపండి","ఈ ఫోన్‌లో ఈ భాష వాయిస్ లేదు. మీరు రాసింది చదవవచ్చు.","ఈ ఫోన్‌లో మాట్లాడడం సాధ్యం కాదు. దయచేసి టైప్ చేయండి.","దయచేసి మైక్‌కు అనుమతి ఇచ్చి మళ్లీ ప్రయత్నించండి."],
+ml:["ഭാഷ","സർക്കാർ പദ്ധതികൾ ലളിതമായി.","അമർത്തി സംസാരിക്കുക","കേൾക്കുന്നു… നിർത്താൻ അമർത്തുക","നിങ്ങൾക്ക് എന്താണ് അറിയേണ്ടതെന്ന് പറയൂ.","പദ്ധതി പോസ്റ്റർ അപ്‌ലോഡ് ചെയ്യുക","ടൈപ്പ് ചെയ്യുക","ഹോം","എന്റെ ചോദ്യങ്ങൾ","സഹായം","അമർത്തി ഉത്തരം പറയൂ","കേൾക്കുക","നിങ്ങൾ","വീണ്ടും തുടങ്ങുക","അയയ്ക്കുക","ഇവിടെ ടൈപ്പ് ചെയ്യൂ","നിങ്ങളുടെ യോഗ്യത","ഈ പദ്ധതി എന്താണ് ചെയ്യുന്നത്","ആർക്കൊക്കെ അപേക്ഷിക്കാം","ആനുകൂല്യങ്ങൾ","വേണ്ട രേഖകൾ","എങ്ങനെ അപേക്ഷിക്കാം","സഹായം വേണോ?","നിങ്ങൾക്ക് എന്നോട് സംസാരിക്കാം. മൈക്ക് അമർത്തി എന്താണ് അറിയേണ്ടതെന്ന് പറയൂ.","പദ്ധതിയുടെ പോസ്റ്റർ ഉണ്ടെങ്കിൽ 'പദ്ധതി പോസ്റ്റർ അപ്‌ലോഡ് ചെയ്യുക' അമർത്തൂ. ഞാൻ വിശദീകരിക്കാം.","മൈക്കിലേക്ക് പോകുക","നിങ്ങൾ ഇതുവരെ ഒന്നും ചോദിച്ചിട്ടില്ല.","ചോദ്യം ചോദിക്കുക","വീണ്ടും ചോദിക്കാൻ ചോദ്യം അമർത്തൂ.","നിങ്ങളുടെ ഭാഷ തിരഞ്ഞെടുക്കുക","ശരി! ഈ പദ്ധതി ഞാൻ മനസ്സിലാക്കാം.","ഞാൻ ഈ പദ്ധതി അപ്‌ലോഡ് ചെയ്തു. എനിക്ക് അപേക്ഷിക്കാമോ?","എന്തോ കുഴപ്പം സംഭവിച്ചു. വീണ്ടും ശ്രമിക്കൂ.","ഈ പോസ്റ്റർ വായിക്കാനായില്ല. വ്യക്തമായ ഫോട്ടോ എടുത്ത് വീണ്ടും ശ്രമിക്കൂ.","📷 ഫോട്ടോ അയയ്ക്കുക","ഈ ഫോണിൽ ഈ ഭാഷയുടെ ശബ്ദം ഇല്ല. എഴുതിയത് വായിക്കാം.","ഈ ഫോണിൽ സംസാരിക്കാൻ കഴിയില്ല. ടൈപ്പ് ചെയ്യൂ.","മൈക്കിന് അനുമതി നൽകി വീണ്ടും ശ്രമിക്കൂ."],
+kn:["ಭಾಷೆ","ಸರ್ಕಾರಿ ಯೋಜನೆಗಳು ಸರಳವಾಗಿ.","ಒತ್ತಿ ಮಾತನಾಡಿ","ಕೇಳುತ್ತಿದ್ದೇನೆ… ನಿಲ್ಲಿಸಲು ಒತ್ತಿ","ನೀವು ಏನು ತಿಳಿಯಲು ಬಯಸುತ್ತೀರಿ ಎಂದು ಹೇಳಿ.","ಯೋಜನೆಯ ಪೋಸ್ಟರ್ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ","ಟೈಪ್ ಮಾಡಿ","ಮುಖಪುಟ","ನನ್ನ ಪ್ರಶ್ನೆಗಳು","ಸಹಾಯ","ಒತ್ತಿ ಉತ್ತರ ಹೇಳಿ","ಕೇಳಿ","ನೀವು","ಮತ್ತೆ ಆರಂಭಿಸಿ","ಕಳುಹಿಸಿ","ಇಲ್ಲಿ ಟೈಪ್ ಮಾಡಿ","ನಿಮ್ಮ ಅರ್ಹತೆ","ಈ ಯೋಜನೆ ಏನು ಮಾಡುತ್ತದೆ","ಯಾರು ಅರ್ಜಿ ಸಲ್ಲಿಸಬಹುದು","ಪ್ರಯೋಜನಗಳು","ಬೇಕಾದ ದಾಖಲೆಗಳು","ಹೇಗೆ ಅರ್ಜಿ ಸಲ್ಲಿಸುವುದು","ಸಹಾಯ ಬೇಕೇ?","ನೀವು ನನ್ನೊಂದಿಗೆ ಮಾತನಾಡಬಹುದು. ಮೈಕ್ ಒತ್ತಿ, ನೀವು ಏನು ತಿಳಿಯಲು ಬಯಸುತ್ತೀರಿ ಎಂದು ಹೇಳಿ.","ನಿಮ್ಮ ಬಳಿ ಯೋಜನೆಯ ಪೋಸ್ಟರ್ ಇದ್ದರೆ 'ಯೋಜನೆಯ ಪೋಸ್ಟರ್ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ' ಒತ್ತಿ. ನಾನು ವಿವರಿಸುತ್ತೇನೆ.","ಮೈಕ್‌ಗೆ ಹೋಗಿ","ನೀವು ಇನ್ನೂ ಏನನ್ನೂ ಕೇಳಿಲ್ಲ.","ಪ್ರಶ್ನೆ ಕೇಳಿ","ಮತ್ತೆ ಕೇಳಲು ಪ್ರಶ್ನೆಯನ್ನು ಒತ್ತಿ.","ನಿಮ್ಮ ಭಾಷೆಯನ್ನು ಆರಿಸಿ","ಸರಿ! ಈ ಯೋಜನೆಯನ್ನು ನಿಮಗಾಗಿ ಅರ್ಥಮಾಡಿಕೊಳ್ಳುತ್ತೇನೆ.","ನಾನು ಈ ಯೋಜನೆಯನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿದ್ದೇನೆ. ನಾನು ಅರ್ಜಿ ಸಲ್ಲಿಸಬಹುದೇ?","ಏನೋ ತಪ್ಪಾಯಿತು. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.","ಈ ಪೋಸ್ಟರ್ ಓದಲಾಗಲಿಲ್ಲ. ಸ್ಪಷ್ಟ ಫೋಟೋ ತೆಗೆದು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.","📷 ಫೋಟೋ ಕಳುಹಿಸಿ","ಈ ಫೋನ್‌ನಲ್ಲಿ ಈ ಭಾಷೆಯ ಧ್ವನಿ ಇಲ್ಲ. ಬರೆದದ್ದನ್ನು ಓದಬಹುದು.","ಈ ಫೋನ್‌ನಲ್ಲಿ ಮಾತನಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ. ದಯವಿಟ್ಟು ಟೈಪ್ ಮಾಡಿ.","ಮೈಕ್‌ಗೆ ಅನುಮತಿ ನೀಡಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."]};
+const X={en:["Check if I can apply","Scheme identified"],ta:["நான் விண்ணப்பிக்கலாமா என்று பார்க்கவும்","திட்டம் கண்டறியப்பட்டது"],hi:["जाँचें कि क्या मैं आवेदन कर सकता हूँ","योजना पहचानी गई"],te:["నేను దరఖాస్తు చేయవచ్చో చూడండి","పథకం గుర్తించబడింది"],ml:["എനിക്ക് അപേക്ഷിക്കാമോ എന്ന് നോക്കുക","പദ്ധതി തിരിച്ചറിഞ്ഞു"],kn:["ನಾನು ಅರ್ಜಿ ಸಲ್ಲಿಸಬಹುದೇ ಎಂದು ನೋಡಿ","ಯೋಜನೆ ಗುರುತಿಸಲಾಗಿದೆ"]};
+LK.forEach(l=>T[l].push(...X[l]));
+const t=k=>{const i=K.indexOf(k);return (T[LK[S.lang]]||T.en)[i]||T.en[i]};
+const mt=m=>m.key?t(m.key):m.text;
+function applyLang(){document.documentElement.lang=LK[S.lang];document.querySelectorAll("[data-t]").forEach(e=>e.textContent=t(e.dataset.t))}
+
+/* ---------- speech out ---------- */
+function speak(parts,onfail){
+  if(!("speechSynthesis" in window)){onfail&&onfail();return}
+  speechSynthesis.cancel();
+  const vs=speechSynthesis.getVoices(),v=vs.find(v=>v.lang.replace("_","-").toLowerCase().startsWith(langCode().slice(0,2)));
+  if(S.lang&&vs.length&&!v&&onfail)onfail();
+  [].concat(parts).filter(Boolean).forEach(p=>{const u=new SpeechSynthesisUtterance(p);u.lang=langCode();u.rate=.9;if(v)u.voice=v;speechSynthesis.speak(u)});
+}
+const parts=m=>[mt(m),m.verdict&&m.verdict.title+". "+m.verdict.text];
+const listen=p=>speak(p,()=>alert(t("noVoice")));
+
+/* ---------- speech in ---------- */
+function startMic(cb){
+  if(!SR){S.typing=true;render();alert(t("noMic"));return}
+  speechSynthesis.cancel();
+  if(S.listening){S.rec&&S.rec.stop();return}
+  const r=new SR();S.rec=r;r.lang=langCode();r.interimResults=false;
+  r.onresult=e=>cb(e.results[0][0].transcript);
+  r.onerror=e=>{S.listening=false;render();if(e.error==="not-allowed")alert(t("micErr"))};
+  r.onend=()=>{S.listening=false;render()};
+  S.listening=true;render();try{r.start()}catch(e){S.listening=false;render()}
+}
+
+/* ---------- AI ---------- */
+const EXTRA="The person just sent a photo of a scheme poster and you have already explained it. Now warmly ask the first question needed to check whether they can apply.";
+function prompt(extra){
+  const h=S.hist.map(m=>(m.role==="me"?"Person: ":"You: ")+mt(m)).join("\n");
+  return `You are SchemeGuide AI. Talk like a kind, patient person helping a neighbour who has little experience with technology.
+Write every word in ${langName()}. Use very short, simple, everyday words. Never use technical or official jargon.
+${S.scheme?"The person uploaded a poster. Scheme details: "+JSON.stringify(S.scheme):"No poster has been uploaded. If the person asks about a scheme, answer from what you know, and say if you are not sure."}
+Conversation so far:
+${h}
+Rules:
+- If the scheme details include criteria, ask only about those criteria.
+- Reply to the person's last message in 1 to 3 short sentences.
+- To check eligibility, ask only ONE question at a time, and only what is truly needed. Do not ask what you already know.
+- When you have enough information (or the scheme rules cannot be matched with what you know), also give a verdict.
+- Never promise approval. Say money amounts the way people say them (lakh, crore).
+${extra||""}
+Return ONLY JSON: {"reply":"...","verdict":null} or {"reply":"...","verdict":{"status":"green|yellow|red","title":"short headline such as 'You may be eligible' / 'I need more information' / 'You may not qualify'","text":"1-2 simple sentences why","note":"Please confirm your final eligibility with the official government department."}}
+green = seems to meet basic requirements, yellow = more information needed, red = requirements do not match. Write title, text and note in ${langName()}.`;
+}
+async function aiTurn(voice,pre,extra){
+  S.busy=true;render();
+  try{
+    if(!S.sample)throw 0;
+    const d=await S.sample.json(prompt(extra),{modelTier:"quick",cache:false});
+    const m={role:"ai",text:d.reply||"",verdict:d.verdict||null};S.hist.push(m);S.busy=false;render();
+    if(voice)speak([].concat(pre||[],parts(m)));
+  }catch(e){S.hist.push({role:"ai",key:"errG",err:1});S.busy=false;render()}
+}
+async function ask(text,voice){
+  text=text.trim();if(!text||S.busy)return;
+  S.view="chat";S.typing=false;S.hist.push({role:"me",text});saveQ(text);await aiTurn(voice);
+}
+function saveQ(q){past=[q,...past.filter(x=>x!==q)].slice(0,15);try{localStorage.setItem("sg_q",JSON.stringify(past))}catch(e){}}
+
+async function poster(file){
+  if(!file||S.busy)return;
+  speechSynthesis.cancel();S.view="chat";S.typing=false;S.scheme=null;
+  S.hist=[{role:"me",key:"upQ",img:URL.createObjectURL(file)},{role:"ai",key:"got"}];S.busy=true;render();
+  try{
+    if(!S.sample)throw 0;
+    const p=`Look at this government scheme poster. Write every word in ${langName()}, in very short, simple, everyday words.
+Return ONLY JSON: {"name":"scheme name","does":"one short sentence","who":"one short sentence on who can apply","benefits":"one short sentence","documents":["short item"],"how":"one short sentence on how to apply","criteria":["each eligibility condition on the poster, very short, e.g. farmer, age limit, income limit"],"readable":true}
+If the picture is not a scheme poster or cannot be read, return {"readable":false}. Never invent details that are not on the poster; if something is missing, say the poster does not say.`;
+    const d=await S.sample.json(p,{images:file,cache:false});
+    if(!d.readable||!d.name){S.hist.push({role:"ai",key:"errR",err:1});S.busy=false;render();return}
+    S.scheme=d;S.hist.push({role:"ai",card:d,img:S.hist[0].img,text:summary(d)});
+    await aiTurn(true,summary(d),EXTRA);
+  }catch(e){S.hist.push({role:"ai",key:"errG",err:1});S.busy=false;render()}
+}
+const summary=d=>[d.name,d.does,d.who,d.benefits,(d.documents||[]).join(", "),d.how].join(". ");
+
+/* ---------- views ---------- */
+function msgHTML(m,i){
+  if(m.role==="me")return `<div class="msg me"><div class="who">${t("you")}</div>${m.img?`<img class="ph" src="${m.img}" alt="">`:""}${esc(mt(m))}</div>`;
+  let h=`<div class="msg ai"><div class="who">SchemeGuide AI</div>`;
+  if(m.card){const c=m.card;h+=`<div class="card">${m.img?`<img class="ph" src="${m.img}" alt="">`:""}<h2>✅ ${esc(c.name)}</h2><div class="sec"><b>${t("found")}</b></div>
+  <div class="sec"><b>${t("does")}</b><p>${esc(c.does)}</p></div>
+  <div class="sec"><b>${t("who")}</b><p>${esc(c.who)}</p></div>
+  <div class="sec"><b>${t("ben")}</b><p>${esc(c.benefits)}</p></div>
+  <div class="sec"><b>${t("docs")}</b><ul>${(c.documents||[]).map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+  <div class="sec"><b>${t("how")}</b><p>${esc(c.how)}</p></div></div><button class="big" data-chk style="margin-top:12px">✅ ${t("chk")}</button>`}
+  else h+=`<div>${esc(mt(m))}</div>`;
+  if(m.verdict){const v=m.verdict,s=["green","yellow","red"].includes(v.status)?v.status:"yellow",e={green:"🟢",yellow:"🟡",red:"🔴"}[s];
+    h+=`<div class="verdict ${s}"><b>${t("elig")}</b><h3>${e} ${esc(v.title)}</h3><p>${esc(v.text)}</p><small>${esc(v.note||"")}</small></div>`}
+  if(!m.err)h+=`<button class="listen" data-listen="${i}">🔊 ${t("listen")}</button>`;
+  return h+`</div>`;
+}
+function typeBox(){return `<form class="typebox" id="tf" style="width:100%"><input id="ti" placeholder="${t("ph")}" aria-label="${t("ph")}" autocomplete="off"><button type="submit">${t("send")}</button></form>`}
+function render(){
+  document.querySelectorAll("nav button").forEach(b=>b.toggleAttribute("aria-current",b.dataset.go===(S.view==="chat"?"home":S.view)));
+  const mic=lab=>`${S.listening?"🎙️ "+t("listening"):lab}`;
+  if(S.view==="home"){
+    main.innerHTML=`<div class="home"><h1>SchemeGuide AI</h1><p class="tag">${t("tag")}</p>
+    <button class="mic ${S.listening?"on":""}" id="mic"><span class="ic">🎤</span>${S.listening?t("listening"):t("speak")}</button>
+    <p class="hint">${t("hint")}</p>
+    ${S.typing?typeBox():`<div class="stack"><button class="alt" id="up" ${S.canImg?"":"hidden"}>📷 ${t("upload")}</button><button class="link" id="tp">${t("typeI")}</button></div>`}</div>`;
+  }else if(S.view==="chat"){
+    main.innerHTML=`<div class="chat">${S.hist.map(msgHTML).join("")}${S.busy?`<div class="msg ai"><div class="dots"><span></span><span></span><span></span></div></div>`:""}</div>
+    <div class="dock">
+      <button class="mic small ${S.listening?"on":""}" id="mic" ${S.busy?"disabled":""}><span class="ic">🎤</span>${S.listening?t("listening"):t("ans")}</button>
+      ${S.typing?typeBox():`<div class="stack" style="margin:0;flex-direction:row"><button class="alt" id="tp">⌨️ ${t("typeI")}</button><button class="alt" id="up" ${S.canImg?"":"hidden"}>${t("photo")}</button></div>`}
+      <button class="link" id="again">${t("again")}</button></div>`;
+    $("#again").onclick=()=>{speechSynthesis.cancel();S.hist=[];S.scheme=null;S.view="home";render()};
+    requestAnimationFrame(()=>{main.scrollTop=main.scrollHeight});
+  }else if(S.view==="questions"){
+    main.innerHTML=`<div class="title">${t("myq")}</div>`+(past.length?past.map((q,i)=>`<button class="q" data-q="${i}">💬 ${esc(q)}</button>`).join("")+`<p>${t("tapQ")}</p>`:`<p>${t("noQ")}</p><button class="big" id="go">🎤 ${t("askQ")}</button>`);
+    const g=$("#go");if(g)g.onclick=()=>{S.view="home";render()};
+  }else{
+    main.innerHTML=`<div class="title">${t("helpT")}</div><p>${t("h1")}</p><p>${t("h2")}</p>
+    <div class="stack"><button class="big" id="hl">🔊 ${t("listen")}</button><button class="alt" id="hm">🎤 ${t("goMic")}</button></div>`;
+    $("#hl").onclick=()=>listen([t("h1"),t("h2")]);
+    $("#hm").onclick=()=>{S.view="home";render()};
+  }
+  const m=$("#mic");if(m)m.onclick=()=>startMic(x=>ask(x,true));
+  const up=$("#up");if(up)up.onclick=()=>$("#file").click();
+  const tp=$("#tp");if(tp)tp.onclick=()=>{S.typing=true;render();const i=$("#ti");i&&i.focus()};
+  const tf=$("#tf");if(tf)tf.onsubmit=e=>{e.preventDefault();const i=$("#ti"),v=i.value;i.value="";ask(v,false)};
+  applyLang();
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.go){speechSynthesis.cancel();S.view=b.dataset.go==="home"&&S.hist.length?"chat":b.dataset.go;render()}
+  else if(b.dataset.listen!==undefined)listen(parts(S.hist[+b.dataset.listen]));
+  else if(b.dataset.chk!==undefined){if(!S.busy)aiTurn(true,null,EXTRA)}
+  else if(b.dataset.q!==undefined)ask(past[+b.dataset.q],false);
+});
+$("#file").onchange=e=>{const f=e.target.files[0];e.target.value="";poster(f)};
+$("#langBtn").onclick=()=>{
+  $("#sheetBody").innerHTML=`<h2>${t("chL")}</h2>`+LANGS.map((l,i)=>`<button data-l="${i}" class="${i===S.lang?"on":""}">${i===S.lang?"✓ ":""}${l[0]} · ${l[1]}</button>`).join("");
+  $("#sheet").hidden=false;
+};
+$("#sheet").onclick=e=>{
+  const b=e.target.closest("[data-l]");
+  if(b){S.lang=+b.dataset.l;try{localStorage.setItem("sg_lang",S.lang)}catch(x){}$("#sheet").hidden=true;render();return}
+  if(e.target.id==="sheet")$("#sheet").hidden=true;
+};
+</script>
+</body>
+</html>
